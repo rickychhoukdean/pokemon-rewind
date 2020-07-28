@@ -29,7 +29,7 @@ client.connect((err) => {
         .then((cards) => {
           if ((exists && cards.length > 0) || (!exists && cards.length == 0)) {
             next();
-          } else res.status(400).send({ response });
+          } else res.status(400).send({ error: response });
         });
     };
   }
@@ -45,7 +45,7 @@ client.connect((err) => {
       })
       .catch((err) => {
         console.log(err);
-        res.status(400).send({ status: "An error occured posting the status" });
+        res.status(400).send({ error: "An error occured posting the status" });
       });
   });
   //Deletes collection if it exists
@@ -58,7 +58,7 @@ client.connect((err) => {
       .catch((err) => {
         res
           .status(400)
-          .send({ status: "There was an error in purging the collection" });
+          .send({ error: "There was an error in purging the collection" });
       });
   });
 
@@ -82,7 +82,7 @@ client.connect((err) => {
         res.status(200).send(result);
       })
       .catch((err) => {
-        res.status(400).send({ status: "Error querying the database" });
+        res.status(400).send({ error: "Error querying the database" });
       });
   });
 

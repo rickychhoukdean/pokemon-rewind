@@ -6,6 +6,7 @@ function Search() {
   const [rarity, setRarity] = useState("");
   const [hitpoint, setHitpoint] = useState("");
   const [result, setResult] = useState([]);
+  const [error, setError] = useState("");
 
   const handleRareChange = (event) => {
     setRarity(event.target.value);
@@ -17,15 +18,25 @@ function Search() {
     setHitpoint(event.target.value);
   };
 
-  async function searchCards(event) {
+  function searchCards(event) {
     event.preventDefault();
 
-    const cardData = await fetch(
-      `/api/cards/?name=${name}&rarity=${rarity}&hitpoint=${hitpoint}`
-    ).then((res) => res.json());
-
-    console.log(cardData);
-    setResult(cardData);
+    fetch(`/api/cards/?name=${name}&rarity=${rarity}&hitpoint=${hitpoint}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.error) {
+          setResult([]);
+          setError(data.error);
+        } else {
+          if (data.length) {
+            setResult(data);
+            setError("");
+          } else {
+            setResult([]);
+            setError("No cards matched these queries");
+          }
+        }
+      });
   }
 
   return (
@@ -66,6 +77,7 @@ function Search() {
         <input type="submit" value="Submit" />,
       </form>
       <SearchResult result={result} />
+      <div>{error}</div>
     </section>
   );
 }

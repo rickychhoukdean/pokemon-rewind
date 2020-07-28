@@ -22,12 +22,15 @@ function App() {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        if (data.error) {
+          setResponse(data.error);
+        } else {
+          setResponse("Backup created");
+        }
       })
       .catch((error) => {
         console.error("Error:", error);
       });
-    setResponse("Backup created");
   }
 
   function purgeBackup() {
@@ -36,13 +39,15 @@ function App() {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        if (data.error) {
+          setResponse(data.error);
+        } else {
+          setResponse("Backup deleted");
+        }
       })
       .catch((error) => {
         console.error("Error:", error);
       });
-
-    setResponse("Backup deleted");
   }
 
   function searchBackup() {
@@ -74,7 +79,7 @@ function App() {
       >
         Search backup
       </button>
-      
+
       <div>{response}</div>
     </div>
   );
