@@ -13,9 +13,12 @@ You are able to create/purge a backup and also query the backedup cards via HP, 
 ## Assumptions
 I've assumed only one backup is wanted therefore you can only create one backup at a time.
 If the user inputs no queries to search for it will return the entire database.
-
+I didn't do too much styling for the app as I didn't want to go too far over three hours.    
+I left in the db data in the server.js out for public as this is just a small file - normally I'd use process.env
 
 ## Demo
+
+![A demo of the app](demo.gif)
 
 ## Dependencies
 
