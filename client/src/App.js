@@ -11,7 +11,22 @@ function App() {
     const cardData = await fetch(
       `https://api.pokemontcg.io/v1/cards?setCode=base${pokemonSet}`
     ).then((res) => res.json());
+
     console.log(cardData);
+    fetch(`/api/cards`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(cardData),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
     setResponse("Backup created");
   }
 
