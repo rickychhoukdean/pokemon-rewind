@@ -19,9 +19,8 @@ client.connect((err) => {
 
   //Middleware to check if card collection has something inside it
   function checkDB(exists) {
+    //If exists = true then we will only proceed if the collection exists and if it is false then we will only proceed if the collection doesn't
     let response = "";
-    let checker = "";
-
     exists
       ? (response = "There is no backup")
       : (response = "Backup already exists");
@@ -51,6 +50,7 @@ client.connect((err) => {
         res.status(400).send({ error: "An error occured posting the status" });
       });
   });
+
   //Deletes collection if it exists
   app.delete("/api/cards", checkDB(true), (req, res) => {
     pokemonCardsCollection
@@ -73,7 +73,6 @@ client.connect((err) => {
     const hitpoint = queries.hitpoint;
     const nameRegex = new RegExp(".*" + name + ".*", "i");
     let queryObj = {};
-
     rarity ? (queryObj.rarity = rarity) : null;
     hitpoint ? (queryObj.hp = hitpoint) : null;
     name ? (queryObj.name = nameRegex) : null;
