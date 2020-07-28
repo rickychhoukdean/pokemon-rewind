@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./App.css";
+import Search from "./components/Search";
 
 function App() {
   const [response, setResponse] = useState("");
@@ -44,6 +45,10 @@ function App() {
     setResponse("Backup deleted");
   }
 
+  function searchBackup() {
+    return setResponse(<Search />);
+  }
+
   return (
     <div className="App">
       <h2>Pokemon Set {pokemonSet}</h2>
@@ -62,7 +67,14 @@ function App() {
       >
         Purge Backup
       </button>
-      <button>Search backup</button>
+      <button
+        onClick={() => {
+          searchBackup();
+        }}
+      >
+        Search backup
+      </button>
+      
       <div>{response}</div>
     </div>
   );

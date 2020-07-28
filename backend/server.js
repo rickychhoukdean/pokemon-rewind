@@ -48,6 +48,27 @@ client.connect((err) => {
       });
   });
 
+  app.get("/api/card/", (req, res) => {
+    const queries = req.query;
+    const name = queries.name;
+    const rarity = queries.rarity;
+    const hitpoint = queries.hitpoint;
+    const nameRegex = new RegExp(".*" + name + ".*", "i");
+    let queryObj = {};
+
+    rarity ? (queryObj.rarity = rarity) : null;
+    hitpoint ? (queryObj.hp = hitpoint) : null;
+    name ? (queryObj.name = nameRegex) : null;
+
+    pokemonCardsCollection
+      .find(queryObj)
+      .toArray()
+      .then((result) => res.status(200).send(result))
+      .catch((err) => {
+        res.status(400).send(error);
+      });
+  });
+
   const port = process.env.PORT || 5000;
   app.listen(port);
 
