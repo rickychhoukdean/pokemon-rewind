@@ -37,6 +37,17 @@ client.connect((err) => {
       });
   });
 
+  app.delete("/api/cards", (req, res) => {
+    pokemonCardsCollection
+      .remove({})
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  });
+
   const port = process.env.PORT || 5000;
   app.listen(port);
 

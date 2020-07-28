@@ -12,7 +12,6 @@ function App() {
       `https://api.pokemontcg.io/v1/cards?setCode=base${pokemonSet}`
     ).then((res) => res.json());
 
-    console.log(cardData);
     fetch(`/api/cards`, {
       method: "POST",
       headers: {
@@ -31,6 +30,17 @@ function App() {
   }
 
   function purgeBackup() {
+    fetch(`/api/cards`, {
+      method: "DELETE",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+
     setResponse("Backup deleted");
   }
 
