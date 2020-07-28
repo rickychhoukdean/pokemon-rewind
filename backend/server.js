@@ -10,7 +10,10 @@ app.use(bodyParser.json());
 
 const uri =
   "mongodb+srv://test:test123@cluster0.prm7w.mongodb.net/pokemon?retryWrites=true&w=majority";
-const client = new MongoClient(uri, { useNewUrlParser: true });
+const client = new MongoClient(uri, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 client.connect((err) => {
   const pokemonCardsCollection = client.db("pokemon").collection("cards");
 
@@ -51,7 +54,7 @@ client.connect((err) => {
   //Deletes collection if it exists
   app.delete("/api/cards", checkDB(true), (req, res) => {
     pokemonCardsCollection
-      .remove({})
+      .deleteMany({})
       .then((response) => {
         res.status(200).send({ status: "Success, collection purged" });
       })

@@ -56,7 +56,7 @@ function App() {
 
   return (
     <div className="App">
-      <h2>Pokemon Set {pokemonSet}</h2>
+      <h2>Pokemon Set {pokemonSet} Backup</h2>
 
       <button
         onClick={() => {
@@ -80,7 +80,7 @@ function App() {
         Search backup
       </button>
 
-      <div>{response}</div>
+      <div className="response">{response}</div>
     </div>
   );
 }

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import SearchResult from "./SearchResult";
+import "../App.css";
 
 function Search() {
   const [name, setName] = useState("");
@@ -41,7 +42,7 @@ function Search() {
 
   return (
     <section>
-      <form onSubmit={searchCards}>
+      <form className="form" onSubmit={searchCards}>
         <label htmlFor="name">
           Name:
           <input
@@ -59,7 +60,7 @@ function Search() {
             onChange={handleRareChange}
             value={rarity}
           >
-            <option value="">any</option>
+            <option value="">Any</option>
             <option value="Common">Common</option>
             <option value="Uncommon">Uncommon</option>
             <option value="Rare">Rare</option>
@@ -77,7 +78,7 @@ function Search() {
         <input type="submit" value="Submit" />,
       </form>
       <SearchResult result={result} />
-      <div>{error}</div>
+      <div className="response">{error}</div>
     </section>
   );
 }
