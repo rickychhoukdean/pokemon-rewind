@@ -14,16 +14,28 @@ const client = new MongoClient(uri, { useNewUrlParser: true });
 client.connect((err) => {
   const pokemonCardsCollection = client.db("pokemon").collection("cards");
 
-  app.get("/api/cards", (req, res) => {
-    pokemonCardsCollection
-      .find()
-      .toArray()
-      .then((cards) => {
-        res.send({ cards });
-      });
-  });
+  //Middleware to check if card collection has something inside it
+  function checkDB(exists) {
+    let response = "";
+    let checker = "";
 
-  app.post("/api/cards", (req, res) => {
+    exists
+      ? (response = "There is no backup")
+      : (response = "Backup already exists");
+    return function (req, res, next) {
+      pokemonCardsCollection
+        .find()
+        .toArray()
+        .then((cards) => {
+          if ((exists && cards.length > 0) || (!exists && cards.length == 0)) {
+            next();
+          } else res.status(400).send({ response });
+        });
+    };
+  }
+
+  //Upload backup to collection if collection is empty
+  app.post("/api/cards", checkDB(false), (req, res) => {
     const cardsArray = req.body.cards;
 
     pokemonCardsCollection
@@ -33,22 +45,25 @@ client.connect((err) => {
       })
       .catch((err) => {
         console.log(err);
-        res.status(400).send({ status });
+        res.status(400).send({ status: "An error occured posting the status" });
       });
   });
-
-  app.delete("/api/cards", (req, res) => {
+  //Deletes collection if it exists
+  app.delete("/api/cards", checkDB(true), (req, res) => {
     pokemonCardsCollection
       .remove({})
       .then((response) => {
-        console.log(response);
+        res.status(200).send({ status: "Success, collection purged" });
       })
       .catch((err) => {
-        console.log(err);
+        res
+          .status(400)
+          .send({ status: "There was an error in purging the collection" });
       });
   });
 
-  app.get("/api/card/", (req, res) => {
+  //Searches database if it exists
+  app.get("/api/cards/", checkDB(true), (req, res) => {
     const queries = req.query;
     const name = queries.name;
     const rarity = queries.rarity;
@@ -63,9 +78,11 @@ client.connect((err) => {
     pokemonCardsCollection
       .find(queryObj)
       .toArray()
-      .then((result) => res.status(200).send(result))
+      .then((result) => {
+        res.status(200).send(result);
+      })
       .catch((err) => {
-        res.status(400).send(error);
+        res.status(400).send({ status: "Error querying the database" });
       });
   });
 

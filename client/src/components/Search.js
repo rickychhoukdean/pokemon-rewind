@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import SearchResult from "./SearchResult";
 
 function Search() {
   const [name, setName] = useState("");
@@ -20,10 +21,8 @@ function Search() {
     event.preventDefault();
 
     const cardData = await fetch(
-      `/api/card/?name=${name}&rarity=${rarity}&hitpoint=${hitpoint}`
+      `/api/cards/?name=${name}&rarity=${rarity}&hitpoint=${hitpoint}`
     ).then((res) => res.json());
-
-
 
     console.log(cardData);
     setResult(cardData);
@@ -66,6 +65,7 @@ function Search() {
         </label>
         <input type="submit" value="Submit" />,
       </form>
+      <SearchResult result={result} />
     </section>
   );
 }
